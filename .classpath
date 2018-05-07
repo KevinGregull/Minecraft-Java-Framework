@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="libs/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="libs/bukkit-1.11.2-R0.1-20170514.012224-124-shaded.jar" sourcepath="libs/bukkit-1.11.2-R0.1-20170514.012224-124-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="https://jd.bukkit.org"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
