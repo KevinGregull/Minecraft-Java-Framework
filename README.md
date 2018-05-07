@@ -6,8 +6,8 @@ This is written as a Plugin for "CraftBukkit" a modified extendable Mincraft Ser
 Instructions on how to build it can be found here: https://www.spigotmc.org/wiki/buildtools/
 
 ## Usage
-1. Modify the build.xml (Ant), to reflect your Bukkit Installation/Build Path, etc.
-2. Build the JAR of this Framework
+1. Build the JAR of this Framework
+2. Put it in the "plugin" Folder of Bukkit installation
 3. Run the Minecraft Server
 
 ## Optional
