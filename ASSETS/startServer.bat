@@ -1,0 +1,1 @@
+java -jar craftbukkit-1.12.2.jar

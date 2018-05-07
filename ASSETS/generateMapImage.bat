@@ -1,0 +1,1 @@
+mapGenerator\mapcrafter.exe -c render.conf -j 10
