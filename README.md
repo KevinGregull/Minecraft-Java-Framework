@@ -62,7 +62,7 @@ name = Processed 1
 world = Processed1
 ```
 
-#### Sample RunScript for MapCrafter
+### Sample RunScript for MapCrafter
 ```
 mapcrafter.exe -c render.conf -j 5
 ```
@@ -70,4 +70,181 @@ mapcrafter.exe -c render.conf -j 5
 Or for Unix
 ```
 ./mapcrafter -c render.conf -j 5
+```
+
+
+
+### ANT Buildfile build.xml
+#### Notes
+- This is written for Windows, but can easily be adapted for Unix as well!
+- This assumes you are working with the original Mapfiles provided by GDMC. This means that we generate your INSTRUCTIONS.txt and render.conf based on their Mapnames (TestMap1,TestMap2,TestMap3). If you need different ones, please change the specific occurances.
+- 
+
+```xml
+<?xml version="1.0" ?>
+<project name="MinecraftPCG" basedir="." default="main">
+
+	<!-- CONF -->
+	<property name="server.dir"  	value="F:\Bukkit"/><!-- Edit this to your Bukkit Server Path -->
+	<property name="lib.dir"     	value="libs"/>
+    <property name="src.dir"     	value="src"/>
+    <property name="build.dir"   	value="build"/>
+    <property name="classes.dir" 	value="${build.dir}/classes"/>
+    <property name="jar.dir"     	value="${server.dir}/plugins"/> 
+	<property name="browser.bin" 	value="C:\Program Files\Opera\launcher.exe"/> <!-- Edit this to your Browser (If you use MapCrafter, this will allow the Build Tool to open the Map in the Browser after it is generated! -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- Map Configs (EDIT THESE IF YOU HAVE DIFFERENT MAPNAMES) -->
+ <target name="writeconf_ALL" depends="jar"> 
+        <echo file="${server.dir}/INSTRUCTIONS.txt">TestMap1,TestMap1_GEN,-233,50,-239,32,128,16
+TestMap2,TestMap2_GEN,-128,50,-128,128,128,128
+TestMap3,TestMap3_GEN,-128,50,-128,128,128,128</echo>
+        <echo file="${server.dir}/render.conf">output_dir = output
+
+[world:Processed1]
+input_dir = TestMap1_GEN
+[world:Processed2]
+input_dir = TestMap2_GEN
+[world:Processed3]
+input_dir = TestMap3_GEN
+
+[map:Processed1]
+name = Processed 1
+world = Processed1
+[map:Processed2]
+name = Processed 2
+world = Processed2
+[map:Processed3]
+name = Processed 3
+world = Processed3
+		</echo>
+    </target>
+
+    <target name="writeconf_ONE"> 
+        <echo file="${server.dir}/INSTRUCTIONS.txt">TestMap1,TestMap1_GEN,-233,50,-239,32,128,16</echo>
+        <echo file="${server.dir}/render.conf">output_dir = output
+
+[world:Processed1]
+input_dir = TestMap1_GEN
+
+[map:Processed1]
+name = Processed 1
+world = Processed1
+		</echo>
+    </target>
+
+    <target name="writeconf_TWO"> 
+        <echo file="${server.dir}/INSTRUCTIONS.txt">TestMap2,TestMap2_GEN,-233,50,-239,32,128,16</echo>
+        <echo file="${server.dir}/render.conf">output_dir = output
+
+[world:Processed2]
+input_dir = TestMap2_GEN
+
+[map:Processed2]
+name = Processed 2
+world = Processed2
+		</echo>
+    </target>
+
+    <target name="writeconf_THREE"> 
+        <echo file="${server.dir}/INSTRUCTIONS.txt">TestMap3,TestMap3_GEN,-233,50,-239,32,128,16</echo>
+        <echo file="${server.dir}/render.conf">output_dir = output
+
+[world:Processed3]
+input_dir = TestMap3_GEN
+
+[map:Processed3]
+name = Processed 3
+world = Processed3
+		</echo>
+    </target>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Makes sure Libs are included -->
+	<path id="master-classpath">
+	  	<fileset dir="${lib.dir}/">
+			<include name="*.jar"/>
+	  	</fileset>
+		<pathelement path="${build.dir}"/>
+	</path>
+
+  <!-- Clean deletes The Build, as well as the JAR and the Mapcrafter Map. If you do not use Mapcrafter delete the /output Line -->
+    <target name="clean">
+		<delete file="${jar.dir}/${ant.project.name}.jar"/>
+        <delete dir="${build.dir}"/>
+		<delete dir="${server.dir}/output"/>
+    </target>
+
+  <!-- This compiles your sources, make sure to edit the executable to your javac!!! -->
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac includeantruntime="false" srcdir="${src.dir}" destdir="${classes.dir}" executable="C:\Program Files\Java\jdk1.8.0_72\bin\javac.exe" fork="true">
+			<classpath refid="master-classpath"/>
+		</javac>
+    </target>
+
+  <!-- This packs your JAR and places it in the Bukkit Plugin Folder -->
+    <target name="jar" depends="compile"> 
+        <mkdir dir="${jar.dir}"/>
+        <jar update="true" destfile="${jar.dir}/${ant.project.name}.jar">
+			<fileset dir="${classes.dir}"/>
+			<fileset dir="${lib.dir}"/>
+    		<fileset file="plugin.yml"/>
+		</jar> 
+    </target>
+
+  <!-- This Autoruns the Minecraft Server -->
+    <target name="run" depends="jar"> 
+        <java dir="${server.dir}" fork="true" jar="${server.dir}/craftbukkit-1.12.2.jar"/>
+    </target>
+
+  <!-- This generated the MapImage with MapCrafter -->
+    <target name="print" depends="run"> 
+        <exec dir="${server.dir}" executable="${server.dir}/generateMapImage.bat"/>
+		<exec dir="${server.dir}/output" executable="${browser.bin}">
+			<arg value="${server.dir}/output/index.html"/>
+		</exec>
+    </target>
+
+  <!-- This defines the Targets, if you do NOT use MapCrafter, be sure to remove the print Target!!! -->
+    <target name="clean-build" depends="clean,jar"/>
+	<target name="ALL" depends="clean,writeconf_ALL,print"/>
+	<target name="ONE" depends="clean,writeconf_ONE,print"/>
+	<target name="TWO" depends="clean,writeconf_TWO,print"/>
+	<target name="THREE" depends="clean,writeconf_THREE,print"/>
+
+  <!-- Here you can choose which of the Maps you want to modify -->
+    <target name="main" depends="ONE"/><!-- ALL, ONE, TWO, THREE --> 
+
+</project>
 ```
