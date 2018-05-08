@@ -1,0 +1,10 @@
+name: MinecraftPCG
+main: com.tudortmund.pcg.MinecraftPCG
+version: 1
+commands:
+   toworld:
+      description: This Teleports you to a World
+      usage: /toworld [name]
+   regenerate:
+      description: Runs the World generation again
+      usage: /regenerate [name]
