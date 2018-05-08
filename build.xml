@@ -2,13 +2,15 @@
 <project name="MinecraftPCG" basedir="." default="main">
 
 	<!-- CONF -->
-	<property name="server.dir"  	value="F:\Bukkit"/><!-- Edit this to your Bukkit Path -->
+	<property name="server.dir"  	value="C:\Users\KevinGregull\Desktop\Clean"/><!-- Edit this to your Bukkit Path -->
+	<property name="server.version"	value="craftbukkit-1.12.2.jar"/>
 	<property name="lib.dir"     	value="libs"/>
     <property name="src.dir"     	value="src"/>
     <property name="build.dir"   	value="build"/>
     <property name="classes.dir" 	value="${build.dir}/classes"/>
     <property name="jar.dir"     	value="${server.dir}/plugins"/> 
-	<property name="browser.bin" 	value="C:\Program Files\Opera\launcher.exe"/> 
+	<property name="browser.bin" 	value="C:\Program Files\Opera\launcher.exe"/>
+	<property name="jdk.bin" 		value="C:\Program Files\Java\jdk1.8.0_161\bin\javac.exe"/> 
 
 
 
@@ -123,7 +125,7 @@ world = Processed3
 
     <target name="compile">
         <mkdir dir="${classes.dir}"/>
-        <javac includeantruntime="false" srcdir="${src.dir}" destdir="${classes.dir}" executable="C:\Program Files\Java\jdk1.8.0_72\bin\javac.exe" fork="true">
+        <javac includeantruntime="false" srcdir="${src.dir}" destdir="${classes.dir}" executable="${jdk.bin}" fork="true">
 			<classpath refid="master-classpath"/>
 		</javac>
     </target>
@@ -138,7 +140,7 @@ world = Processed3
     </target>
 
     <target name="run" depends="jar"> 
-        <java dir="${server.dir}" fork="true" jar="${server.dir}/craftbukkit-1.12.2.jar"/>
+        <java dir="${server.dir}" fork="true" jar="${server.dir}/${server.version}"/>
     </target>
 
     <target name="print" depends="run"> 
